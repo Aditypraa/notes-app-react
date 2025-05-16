@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getInitialData } from "./utils";
+import { getInitialData } from "./utils/data";
 import Header from "./components/Header/Header";
 import NoteBody from "./components/Notes/NoteBody";
 import Footer from "./components/Footer/Footer";
