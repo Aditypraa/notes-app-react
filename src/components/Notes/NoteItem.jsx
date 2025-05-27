@@ -1,37 +1,40 @@
-import NoteItemAction from "./NoteItemAction";
-import NoteItemContent from "./NoteItemContent";
+import { showFormattedDate } from "../../utils/data";
+import { BsFillTrashFill } from "react-icons/bs";
+import { BiArchiveOut, BiArchiveIn } from "react-icons/bi";
 
 function NoteItem({ id, title, body, createdAt, archived, action }) {
-  const onDeleteNote = (item) =>
-    action((notes) => notes.filter((note) => note.id !== item));
+  // Fungsi untuk menghapus catatan
+  const handleDelete = () => {
+    action((notes) => notes.filter((note) => note.id !== id));
+  };
 
-  const onArchiveNote = (item) => {
+  // Fungsi untuk mengarsip/unarsip catatan
+  const handleArchive = () => {
     action((notes) =>
-      notes.map((note) => {
-        if (note.id === item) {
-          return { ...note, archived: !note.archived };
-        }
-        return note;
-      })
+      notes.map((note) =>
+        note.id === id ? { ...note, archived: !note.archived } : note
+      )
     );
   };
 
   return (
     <div className="note-item">
-      <NoteItemContent
-        title={title}
-        body={body}
-        createdAt={createdAt}
-        archived={archived}
-        action={action}
-      />
+      {/* Konten Catatan */}
+      <div className="note-item__content">
+        <h3 className="note-item__title">{title}</h3>
+        <p className="note-item__date">{showFormattedDate(createdAt)}</p>
+        <p className="note-item__body">{body}</p>
+      </div>
 
-      <NoteItemAction
-        onDeleteNote={onDeleteNote}
-        onArchiveNote={onArchiveNote}
-        id={id}
-        archived={archived}
-      />
+      {/* Tombol Aksi */}
+      <div className="note-item__action">
+        <button onClick={handleDelete} aria-label="Hapus Catatan">
+          <BsFillTrashFill />
+        </button>
+        <button onClick={handleArchive} aria-label="Arsip Catatan">
+          {archived ? <BiArchiveOut /> : <BiArchiveIn />}
+        </button>
+      </div>
     </div>
   );
 }
