@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # 📑 Aplikasi Catatan Pribadi
 
 **Aplikasi web React modern untuk mengelola catatan pribadi dengan fitur pencarian dan arsip**
@@ -210,6 +209,4 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
 
-⭐ Jangan lupa kasih star jika project ini membantu kamu!
-=======
->>>>>>> 1f47189d9e2348e6cd3c5ee5ec05b885ecb7d8b7
+# ⭐ Jangan lupa kasih star jika project ini membantu kamu!
