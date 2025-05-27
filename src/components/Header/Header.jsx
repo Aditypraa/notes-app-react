@@ -3,7 +3,7 @@ import Input from "../Input/Input";
 function Header({ search, setQuery }) {
   return (
     <div className="note-app__header">
-      <h1>📑 Notes App</h1>
+      <h1>📑 Aplikasi Catatan</h1>
       <div className="note-search">
         <Input
           value={search}
@@ -11,7 +11,7 @@ function Header({ search, setQuery }) {
           type="search"
           id="search_note"
           name="search_note"
-          placeholder="Find Notes..."
+          placeholder="Cari catatan..."
         />
       </div>
     </div>

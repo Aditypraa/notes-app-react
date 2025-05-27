@@ -4,12 +4,17 @@ import NoteList from "./NoteList";
 function NoteBody({ notesAll, notesArchive, setNotes }) {
   return (
     <div className="note-app__body">
+      {/* Form untuk menambah catatan baru */}
       <NoteInput setNotes={setNotes} />
-      <NoteList label="All Notes" setNotes={setNotes} notes={notesAll} />
+
+      {/* Daftar catatan aktif */}
+      <NoteList label="Semua Catatan" notes={notesAll} setNotes={setNotes} />
+
+      {/* Daftar catatan yang diarsip */}
       <NoteList
-        label="Archive Notes"
-        setNotes={setNotes}
+        label="Catatan Arsip"
         notes={notesArchive}
+        setNotes={setNotes}
       />
     </div>
   );

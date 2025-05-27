@@ -1,31 +1,30 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { getInitialData } from "./utils/data";
 import Header from "./components/Header/Header";
 import NoteBody from "./components/Notes/NoteBody";
 import Footer from "./components/Footer/Footer";
 
 function App() {
-  const [query, setQuery] = useState("");
-  const [searchNotes, setSearchNotes] = useState([]);
+  // State untuk kata kunci pencarian
+  const [searchQuery, setSearchQuery] = useState("");
+  // State untuk menyimpan semua catatan
   const [notes, setNotes] = useState(getInitialData());
 
-  const notesAll = (searchNotes || notes).filter((note) => !note.archived);
-  const notesArchive = (searchNotes || notes).filter((note) => note.archived);
+  // Filter catatan berdasarkan kata kunci pencarian
+  const filteredNotes = notes.filter((note) =>
+    note.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
-  useEffect(() => {
-    setSearchNotes(
-      notes.filter((note) =>
-        note.title.toLowerCase().includes(query.toLowerCase())
-      )
-    );
-  }, [query, notes]);
+  // Pisahkan catatan aktif dan yang diarsip
+  const activeNotes = filteredNotes.filter((note) => !note.archived);
+  const archivedNotes = filteredNotes.filter((note) => note.archived);
 
   return (
     <div className="note-app">
-      <Header search={query} setQuery={setQuery} />
+      <Header search={searchQuery} setQuery={setSearchQuery} />
       <NoteBody
-        notesAll={notesAll}
-        notesArchive={notesArchive}
+        notesAll={activeNotes}
+        notesArchive={archivedNotes}
         setNotes={setNotes}
       />
       <Footer />

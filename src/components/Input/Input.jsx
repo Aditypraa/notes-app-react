@@ -1,32 +1,34 @@
-// Komponen Input yang menerima beberapa properti melalui destructuring.
-const Input = ({ name, type, value, onChange, ...rest }) => {
+function Input({ name, type, value, onChange, ...rest }) {
   // Fungsi untuk menangani perubahan input
-  const changeHandler = (event) => {
-    const currentText = event.target.value;
+  const handleChange = (event) => {
+    const newValue = event.target.value;
 
-    // Terapkan panjang teks maksimum 50 karakter jika nama input adalah "title"
+    // Jika input adalah judul, batasi maksimal 50 karakter
     if (name === "title") {
-      onChange((oldText) => (currentText.length <= 50 ? currentText : oldText));
+      // Hanya update jika masih dalam batas atau tidak melebihi batas
+      if (newValue.length <= 50) {
+        onChange(newValue);
+      }
+      // Jika melebihi 50 karakter, tidak update state (tetap pakai nilai lama)
     } else {
-      onChange(currentText);
+      // Untuk input selain judul, tidak ada batasan
+      onChange(newValue);
     }
   };
 
-  // Properti umum untuk elemen input atau textarea
-  const commonProps = {
+  // Properti yang sama untuk semua input
+  const inputProps = {
     value,
     spellCheck: false,
-    onChange: changeHandler,
+    onChange: handleChange,
     ...rest,
   };
 
-  // Mengembalikan elemen yang sesuai berdasarkan tipe input
-  return type === "textarea" ? (
-    <textarea className="note-input__body" {...commonProps} />
-  ) : (
-    <input className="note-input__title" {...commonProps} />
-  );
-};
+  // Return textarea untuk type="textarea", input untuk lainnya
+  if (type === "textarea") {
+    return <textarea className="note-input__body" {...inputProps} />;
+  }
 
-// Ekspor komponen Input untuk digunakan di file lain
+  return <input className="note-input__title" {...inputProps} />;
+}
 export default Input;

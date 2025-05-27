@@ -3,39 +3,49 @@ import { SlNote } from "react-icons/sl";
 import Input from "../Input/Input";
 
 function NoteInput({ setNotes }) {
-  const [title, setTittle] = useState("");
+  // State untuk input form
+  const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
 
-  const onSubmitEventHandler = (event) => {
+  // Fungsi untuk menambah catatan baru
+  const handleSubmit = (event) => {
     event.preventDefault();
-    const timestamp = new Date().toISOString();
 
-    setNotes((notes) => [
-      ...notes,
+    // Buat ID unik dan timestamp
+    const uniqueId = +new Date();
+    const currentTime = new Date().toISOString();
+
+    // Tambah catatan baru ke daftar
+    setNotes((prevNotes) => [
+      ...prevNotes,
       {
-        id: timestamp,
+        id: uniqueId,
         title: title,
         body: body,
         archived: false,
-        createdAt: timestamp,
+        createdAt: currentTime,
       },
     ]);
+
+    // Bersihkan form setelah submit
+    setTitle("");
+    setBody("");
   };
 
   return (
     <div className="note-input">
-      <h2>New Notes</h2>
-      <form onSubmit={onSubmitEventHandler}>
+      <h2>Catatan Baru</h2>
+      <form onSubmit={handleSubmit}>
         <p className="note-input__title__char-limit">
-          Character left : {50 - title.length}
+          Sisa karakter: {50 - title.length}
         </p>
         <Input
           value={title}
-          onChange={setTittle}
+          onChange={setTitle}
           id="title"
           name="title"
           type="text"
-          placeholder="Input Title..."
+          placeholder="Masukkan judul..."
           required
         />
         <Input
@@ -44,11 +54,11 @@ function NoteInput({ setNotes }) {
           id="body"
           name="body"
           type="textarea"
-          placeholder="Write your notes here..."
+          placeholder="Tulis catatan Anda di sini..."
           required
         />
         <button type="submit">
-          Create <SlNote />
+          Buat Catatan <SlNote />
         </button>
       </form>
     </div>

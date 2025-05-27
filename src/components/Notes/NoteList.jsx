@@ -6,10 +6,18 @@ function NoteList({ notes, label, setNotes }) {
       <h2>{label}</h2>
       <div className="notes-list">
         {notes.length === 0 ? (
-          <p className="notes-list__empty-message">Nothing To Show</p>
+          <p className="notes-list__empty-message">Tidak ada catatan</p>
         ) : (
           notes.map((note) => (
-            <NoteItem action={setNotes} key={note.id} {...note} />
+            <NoteItem
+              key={note.id}
+              id={note.id}
+              title={note.title}
+              body={note.body}
+              createdAt={note.createdAt}
+              archived={note.archived}
+              action={setNotes}
+            />
           ))
         )}
       </div>
