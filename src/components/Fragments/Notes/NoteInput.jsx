@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { SlNote } from "react-icons/sl";
-import Input from "../Input/Input";
+import Input from "../../Elements/Input";
+import PropTypes from "prop-types";
 
 function NoteInput({ setNotes }) {
   // State untuk input form
@@ -64,5 +65,9 @@ function NoteInput({ setNotes }) {
     </div>
   );
 }
+
+NoteInput.propTypes = {
+  setNotes: PropTypes.func.isRequired,
+};
 
 export default NoteInput;

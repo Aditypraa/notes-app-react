@@ -1,4 +1,5 @@
 import NoteItem from "./NoteItem";
+import PropTypes from "prop-types";
 
 function NoteList({ notes, label, setNotes }) {
   return (
@@ -24,5 +25,11 @@ function NoteList({ notes, label, setNotes }) {
     </>
   );
 }
+
+NoteList.propTypes = {
+  notes: PropTypes.array.isRequired,
+  label: PropTypes.string.isRequired,
+  setNotes: PropTypes.func.isRequired,
+};
 
 export default NoteList;

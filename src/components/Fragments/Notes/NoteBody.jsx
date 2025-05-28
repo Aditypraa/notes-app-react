@@ -1,5 +1,6 @@
 import NoteInput from "./NoteInput";
 import NoteList from "./NoteList";
+import PropTypes from "prop-types";
 
 function NoteBody({ notesAll, notesArchive, setNotes }) {
   return (
@@ -19,5 +20,11 @@ function NoteBody({ notesAll, notesArchive, setNotes }) {
     </div>
   );
 }
+
+NoteBody.propTypes = {
+  notesAll: PropTypes.array.isRequired,
+  notesArchive: PropTypes.array.isRequired,
+  setNotes: PropTypes.func.isRequired,
+};
 
 export default NoteBody;

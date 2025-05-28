@@ -1,4 +1,5 @@
-import Input from "../Input/Input";
+import Input from "../Elements/Input";
+import PropTypes from "prop-types";
 
 function Header({ search, setQuery }) {
   return (
@@ -17,5 +18,10 @@ function Header({ search, setQuery }) {
     </div>
   );
 }
+
+Header.propTypes = {
+  search: PropTypes.string.isRequired,
+  setQuery: PropTypes.func.isRequired,
+};
 
 export default Header;

@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 function Input({ name, type, value, onChange, ...rest }) {
   // Fungsi untuk menangani perubahan input
   const handleChange = (event) => {
@@ -31,4 +33,12 @@ function Input({ name, type, value, onChange, ...rest }) {
 
   return <input className="note-input__title" {...inputProps} />;
 }
+
+Input.propTypes = {
+  name: PropTypes.string.isRequired,
+  type: PropTypes.oneOf(["text", "textarea"]).isRequired,
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
+
 export default Input;
