@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 function NoteBody({ notesAll, notesArchive, setNotes }) {
   return (
-    <div className="note-app__body">
+    <div className="max-w-[1200px] mx-auto p-6 md:p-8 flex-1">
       {/* Form untuk menambah catatan baru */}
       <NoteInput setNotes={setNotes} />
 

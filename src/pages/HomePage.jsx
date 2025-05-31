@@ -5,41 +5,41 @@ import MainLayout from "../components/Layouts/MainLayout";
 import NoteBody from "../components/Fragments/Notes/NoteBody";
 
 function HomePage() {
-  // State untuk menyimpan semua catatan
   const [notes, setNotes] = useState([]);
-
   const [searchParams, setSearchParams] = useSearchParams();
+  const searchQuery = searchParams.get("keyword") || "";
 
-  // State untuk kata kunci pencarian
-  const [searchQuery, setSearchQuery] = useState(
-    searchParams.get("keyword") || ""
-  );
-
+  // Simplified data fetching
   useEffect(() => {
-    // Memuat data catatan awal saat komponen dimount
-    setNotes([...getActiveNotes(), ...getArchivedNotes()]);
+    const activeNotes = getActiveNotes();
+    const archivedNotes = getArchivedNotes();
+    setNotes([...activeNotes, ...archivedNotes]);
   }, []);
 
-  useEffect(() => {
-    // Memperbarui URL ketika query pencarian berubah
-    if (searchQuery.trim()) {
-      setSearchParams({ keyword: searchQuery });
+  // Simplified search handling
+  const handleSearchChange = (query) => {
+    if (query.trim()) {
+      setSearchParams({ keyword: query });
     } else {
       setSearchParams({});
     }
-  }, [searchQuery, setSearchParams]);
+  };
 
-  // Filter catatan berdasarkan kata kunci pencarian
-  const filteredNotes = notes.filter((note) =>
-    note.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Extract filtering logic to separate function
+  const getFilteredNotes = () => {
+    if (!searchQuery) return notes;
 
-  // Pisahkan catatan aktif dan yang diarsip
+    return notes.filter((note) =>
+      note.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  };
+
+  const filteredNotes = getFilteredNotes();
   const activeNotes = filteredNotes.filter((note) => !note.archived);
   const archivedNotes = filteredNotes.filter((note) => note.archived);
 
   return (
-    <MainLayout search={searchQuery} setQuery={setSearchQuery}>
+    <MainLayout search={searchQuery} setQuery={handleSearchChange}>
       <NoteBody
         notesAll={activeNotes}
         notesArchive={archivedNotes}

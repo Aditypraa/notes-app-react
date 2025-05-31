@@ -1,24 +1,16 @@
 import PropTypes from "prop-types";
+import { cn } from "../../utils/cn";
 
-function Input({ name, type, value, onChange, ...rest }) {
-  // Fungsi untuk menangani perubahan input
-  const handleChange = (event) => {
-    const newValue = event.target.value;
+function Input({ name, type, value, onChange, className, ...rest }) {
+  const handleChange = (e) => {
+    const newValue = e.target.value;
+    const isTitle = name === "title";
 
-    // Jika input adalah judul, batasi maksimal 50 karakter
-    if (name === "title") {
-      // Hanya update jika masih dalam batas atau tidak melebihi batas
-      if (newValue.length <= 50) {
-        onChange(newValue);
-      }
-      // Jika melebihi 50 karakter, tidak update state (tetap pakai nilai lama)
-    } else {
-      // Untuk input selain judul, tidak ada batasan
+    if (!isTitle || newValue.length <= 50) {
       onChange(newValue);
     }
   };
 
-  // Properti yang sama untuk semua input
   const inputProps = {
     value,
     spellCheck: false,
@@ -26,19 +18,29 @@ function Input({ name, type, value, onChange, ...rest }) {
     ...rest,
   };
 
-  // Return textarea untuk type="textarea", input untuk lainnya
-  if (type === "textarea") {
-    return <textarea className="note-input__body" {...inputProps} />;
-  }
+  const baseClass =
+    "block w-full my-3 px-4 py-4 font-sans bg-white text-slate-900 border-2 border-slate-200 rounded-md shadow-sm transition-all outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 placeholder:text-slate-400 placeholder:font-normal";
 
-  return <input className="note-input__title" {...inputProps} />;
+  const textAreaClass = "min-h-[200px] resize-y text-sm font-normal";
+  const inputClass = "text-base font-semibold";
+
+  const combinedClass = cn(
+    baseClass,
+    type === "textarea" ? textAreaClass : inputClass,
+    className
+  );
+
+  const Component = type === "textarea" ? "textarea" : "input";
+
+  return <Component {...inputProps} className={combinedClass} />;
 }
 
 Input.propTypes = {
   name: PropTypes.string.isRequired,
-  type: PropTypes.oneOf(["text", "textarea"]).isRequired,
+  type: PropTypes.oneOf(["text", "textarea", "search"]).isRequired,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
+  className: PropTypes.string,
 };
 
 export default Input;

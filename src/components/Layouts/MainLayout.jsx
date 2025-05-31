@@ -4,9 +4,9 @@ import PropTypes from "prop-types";
 
 function MainLayout({ children, search = "", setQuery = null }) {
   return (
-    <div className="note-app">
+    <div className="flex flex-col min-h-screen">
       <Header search={search} setQuery={setQuery} />
-      <div className="note-app__body">{children}</div>
+      <div className="flex-1 flex flex-col">{children}</div>
       <Footer />
     </div>
   );
