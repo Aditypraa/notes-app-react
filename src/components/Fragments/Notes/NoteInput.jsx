@@ -3,6 +3,7 @@ import { SlNote } from "react-icons/sl";
 import Input from "../../Elements/Input";
 import PropTypes from "prop-types";
 import Button from "../../Elements/Button";
+import { addNote } from "../../../utils/apiUtils";
 
 const MAX_TITLE_LENGTH = 50;
 
@@ -10,6 +11,7 @@ function NoteInput({ setNotes }) {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
   // Simplified validation
   const validateForm = () => {
@@ -29,25 +31,31 @@ function NoteInput({ setNotes }) {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (!validateForm()) return;
 
-    const newNote = {
-      id: `notes-${Date.now()}`,
-      title: title.trim(),
-      body: body.trim(),
-      archived: false,
-      createdAt: new Date().toISOString(),
-    };
+    setLoading(true);
+    try {
+      const result = await addNote({
+        title: title.trim(),
+        body: body.trim(),
+      });
 
-    setNotes((prevNotes) => [newNote, ...prevNotes]);
-
-    // Reset form
-    setTitle("");
-    setBody("");
-    setErrors({});
+      if (!result.error) {
+        setNotes((prevNotes) => [result.data, ...prevNotes]);
+        // Reset form
+        setTitle("");
+        setBody("");
+        setErrors({});
+      }
+    } catch (error) {
+      console.error("Failed to add note:", error);
+      setErrors({ submit: "Gagal menambahkan catatan. Coba lagi." });
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Simplified error clearing
@@ -81,6 +89,7 @@ function NoteInput({ setNotes }) {
               name="title"
               type="text"
               placeholder="Masukkan judul..."
+              disabled={loading}
             />
             {errors.title && (
               <p className="text-red-500 text-sm mt-1">{errors.title}</p>
@@ -98,6 +107,7 @@ function NoteInput({ setNotes }) {
               name="body"
               type="textarea"
               placeholder="Tulis catatan Anda di sini..."
+              disabled={loading}
             />
             {errors.body && (
               <p className="text-red-500 text-sm mt-1">{errors.body}</p>
@@ -105,12 +115,19 @@ function NoteInput({ setNotes }) {
           </div>
         </div>
 
+        {errors.submit && (
+          <div className="rounded-md bg-red-50 p-4 mt-4">
+            <p className="text-sm text-red-800">{errors.submit}</p>
+          </div>
+        )}
+
         <Button
           type="submit"
-          className="block w-full px-6 py-4 bg-gradient-to-tr from-blue-500 to-blue-600 font-sans text-white font-semibold text-lg rounded-xl mt-6 relative overflow-hidden transition-all hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 button-shine"
+          disabled={loading}
+          className="block w-full px-6 py-4 bg-gradient-to-tr from-blue-500 to-blue-600 font-sans text-white font-semibold text-lg rounded-xl mt-6 relative overflow-hidden transition-all hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 button-shine disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <span className="relative z-10 flex items-center justify-center gap-2">
-            Buat Catatan <SlNote />
+            {loading ? "Menyimpan..." : "Buat Catatan"} <SlNote />
           </span>
         </Button>
       </form>

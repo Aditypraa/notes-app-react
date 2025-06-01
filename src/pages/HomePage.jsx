@@ -1,19 +1,44 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
-import { getActiveNotes, getArchivedNotes } from "../utils/data";
+import { getActiveNotes, getArchivedNotes } from "../utils/apiUtils";
 import MainLayout from "../components/Layouts/MainLayout";
 import NoteBody from "../components/Fragments/Notes/NoteBody";
 
 function HomePage() {
   const [notes, setNotes] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
   const searchQuery = searchParams.get("keyword") || "";
 
-  // Simplified data fetching
+  // Fetch notes from API
   useEffect(() => {
-    const activeNotes = getActiveNotes();
-    const archivedNotes = getArchivedNotes();
-    setNotes([...activeNotes, ...archivedNotes]);
+    const fetchNotes = async () => {
+      setLoading(true);
+      try {
+        const [activeResult, archivedResult] = await Promise.all([
+          getActiveNotes(),
+          getArchivedNotes(),
+        ]);
+
+        const allNotes = [];
+
+        if (!activeResult.error) {
+          allNotes.push(...activeResult.data);
+        }
+
+        if (!archivedResult.error) {
+          allNotes.push(...archivedResult.data);
+        }
+
+        setNotes(allNotes);
+      } catch (error) {
+        console.error("Failed to fetch notes:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchNotes();
   }, []);
 
   // Simplified search handling
@@ -33,6 +58,19 @@ function HomePage() {
       note.title.toLowerCase().includes(searchQuery.toLowerCase())
     );
   };
+
+  if (loading) {
+    return (
+      <MainLayout search={searchQuery} setQuery={handleSearchChange}>
+        <div className="flex justify-center items-center min-h-[400px]">
+          <div className="flex flex-col items-center space-y-4">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+            <p className="text-gray-600">Memuat catatan...</p>
+          </div>
+        </div>
+      </MainLayout>
+    );
+  }
 
   const filteredNotes = getFilteredNotes();
   const activeNotes = filteredNotes.filter((note) => !note.archived);

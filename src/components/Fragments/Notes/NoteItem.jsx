@@ -1,23 +1,50 @@
 import { BsFillTrashFill } from "react-icons/bs";
 import { BiArchiveOut, BiArchiveIn } from "react-icons/bi";
 import { Link } from "react-router";
-import { showFormattedDate } from "../../../utils/data";
+import { showFormattedDate } from "../../../utils/dateUtils";
+import {
+  deleteNote,
+  archiveNote,
+  unarchiveNote,
+} from "../../../utils/apiUtils";
 import PropTypes from "prop-types";
 import Button from "../../Elements/Button";
 
 function NoteItem({ id, title, body, createdAt, archived, action, index = 0 }) {
   // Fungsi untuk menghapus catatan
-  const handleDelete = () => {
-    action((notes) => notes.filter((note) => note.id !== id));
+  const handleDelete = async () => {
+    try {
+      const result = await deleteNote(id);
+      if (!result.error) {
+        // Update local state by removing the deleted note
+        action((notes) => notes.filter((note) => note.id !== id));
+      }
+    } catch (error) {
+      console.error("Failed to delete note:", error);
+    }
   };
 
   // Fungsi untuk mengarsip/unarsip catatan
-  const handleArchive = () => {
-    action((notes) =>
-      notes.map((note) =>
-        note.id === id ? { ...note, archived: !note.archived } : note
-      )
-    );
+  const handleArchive = async () => {
+    try {
+      let result;
+      if (archived) {
+        result = await unarchiveNote(id);
+      } else {
+        result = await archiveNote(id);
+      }
+
+      if (!result.error) {
+        // Update local state by toggling the archived status
+        action((notes) =>
+          notes.map((note) =>
+            note.id === id ? { ...note, archived: !note.archived } : note
+          )
+        );
+      }
+    } catch (error) {
+      console.error("Failed to archive/unarchive note:", error);
+    }
   };
 
   // Dynamic animation delay based on index
