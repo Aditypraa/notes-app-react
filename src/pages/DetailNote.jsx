@@ -58,7 +58,6 @@ function DetailNote() {
       console.error("Failed to delete note:", error);
     }
   };
-
   /**
    * Menangani pengarsipan atau pembatalan arsip catatan
    */
@@ -72,7 +71,14 @@ function DetailNote() {
       }
 
       if (!result.error) {
-        navigate("/"); // Redirect ke halaman utama setelah mengarsipkan/membatalkan arsip
+        // Redirect to appropriate page based on new status
+        if (note.archived) {
+          // If unarchiving, go to home page (active notes)
+          navigate("/");
+        } else {
+          // If archiving, go to archived page
+          navigate("/archived");
+        }
       }
     } catch (error) {
       console.error("Failed to archive/unarchive note:", error);
@@ -118,7 +124,7 @@ function DetailNote() {
     <MainLayout>
       <div className="max-w-3xl mx-auto bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg border border-slate-200 dark:border-slate-600">
         <Link
-          to="/"
+          to={note.archived ? "/archived" : "/"}
           className="inline-flex items-center gap-2 text-blue-500 dark:text-blue-400 no-underline font-medium mb-6 py-2 px-4 rounded-lg transition-all duration-300 border-2 border-transparent hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-500 dark:hover:border-blue-400 hover:-translate-x-1"
         >
           <IoArrowBack /> {t("back")}

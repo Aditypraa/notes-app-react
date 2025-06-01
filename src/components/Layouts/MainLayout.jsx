@@ -1,5 +1,6 @@
 import Footer from "./Footer";
 import Header from "./Header";
+import FloatingCreateButton from "../Elements/FloatingCreateButton";
 import PropTypes from "prop-types";
 
 function MainLayout({ children, search = "", setQuery = null }) {
@@ -10,6 +11,7 @@ function MainLayout({ children, search = "", setQuery = null }) {
         {children}
       </div>
       <Footer />
+      <FloatingCreateButton />
     </div>
   );
 }

@@ -10,6 +10,7 @@ const translations = {
     appTitle: "📑 Aplikasi Catatan",
     searchPlaceholder: "Cari catatan...",
     logout: "Keluar",
+    navigation: "Navigasi",
 
     // Auth Pages
     loginTitle: "Masuk ke Akun",
@@ -63,12 +64,16 @@ const translations = {
     emptyNotesDesc: "Mulai dengan membuat catatan pertama Anda!",
     emptyArchive: "Arsip kosong",
     emptyArchiveDesc: "Belum ada catatan yang diarsipkan.",
+    createNewNote: "Buat Catatan Baru",
+    createNoteDescription:
+      "Tulis ide, pemikiran, atau hal penting lainnya dalam catatan baru.",
   },
   en: {
     // Header & Navigation
     appTitle: "📑 Notes App",
     searchPlaceholder: "Search notes...",
     logout: "Logout",
+    navigation: "Navigation",
 
     // Auth Pages
     loginTitle: "Sign In to Account",
@@ -123,6 +128,9 @@ const translations = {
     emptyNotesDesc: "Start by creating your first note!",
     emptyArchive: "Archive is empty",
     emptyArchiveDesc: "No archived notes yet.",
+    createNewNote: "Create New Note",
+    createNoteDescription:
+      "Write down your ideas, thoughts, or important things in a new note.",
   },
 };
 

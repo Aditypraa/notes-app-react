@@ -1,22 +1,23 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
-import { getActiveNotes } from "../utils/apiUtils";
+import { getArchivedNotes } from "../utils/apiUtils";
 import MainLayout from "../components/Layouts/MainLayout";
 import NoteList from "../components/Fragments/Notes/NoteList";
 import { useLocale } from "../hooks/useLocale";
 
-function HomePage() {
+function ArchivedPage() {
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
   const { t } = useLocale();
   const searchQuery = searchParams.get("keyword") || "";
-  // Fetch active notes from API
+
+  // Fetch archived notes from API
   useEffect(() => {
-    const fetchActiveNotes = async () => {
+    const fetchArchivedNotes = async () => {
       setLoading(true);
       try {
-        const result = await getActiveNotes();
+        const result = await getArchivedNotes();
 
         if (!result.error) {
           setNotes(result.data);
@@ -24,17 +25,17 @@ function HomePage() {
           setNotes([]);
         }
       } catch (error) {
-        console.error("Failed to fetch active notes:", error);
+        console.error("Failed to fetch archived notes:", error);
         setNotes([]);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchActiveNotes();
+    fetchArchivedNotes();
   }, []);
 
-  // Simplified search handling
+  // Handle search functionality
   const handleSearchChange = (query) => {
     if (query.trim()) {
       setSearchParams({ keyword: query });
@@ -43,7 +44,7 @@ function HomePage() {
     }
   };
 
-  // Extract filtering logic to separate function
+  // Filter notes based on search query
   const getFilteredNotes = () => {
     if (!searchQuery) return notes;
 
@@ -55,7 +56,6 @@ function HomePage() {
   if (loading) {
     return (
       <MainLayout search={searchQuery} setQuery={handleSearchChange}>
-        {" "}
         <div className="flex justify-center items-center min-h-[400px]">
           <div className="flex flex-col items-center space-y-4">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
@@ -67,13 +67,15 @@ function HomePage() {
       </MainLayout>
     );
   }
+
   const filteredNotes = getFilteredNotes();
+
   return (
     <MainLayout search={searchQuery} setQuery={handleSearchChange}>
       <div className="max-w-[1200px] mx-auto p-6 md:p-8 flex-1">
-        {/* Active notes list */}
+        {/* Archived notes list */}
         <NoteList
-          label={t("activeNotes")}
+          label={t("archivedNotes")}
           notes={filteredNotes}
           setNotes={setNotes}
         />
@@ -82,4 +84,4 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default ArchivedPage;

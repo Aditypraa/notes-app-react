@@ -8,7 +8,7 @@ import { useLocale } from "../../../hooks/useLocale";
 
 const MAX_TITLE_LENGTH = 50;
 
-function NoteInput({ setNotes }) {
+function NoteInput({ setNotes, onSuccess, showTitle = true }) {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [errors, setErrors] = useState({});
@@ -43,13 +43,19 @@ function NoteInput({ setNotes }) {
         title: title.trim(),
         body: body.trim(),
       });
-
       if (!result.error) {
-        setNotes((prevNotes) => [result.data, ...prevNotes]);
+        if (setNotes) {
+          setNotes((prevNotes) => [result.data, ...prevNotes]);
+        }
         // Reset form
         setTitle("");
         setBody("");
         setErrors({});
+
+        // Call onSuccess callback if provided
+        if (onSuccess) {
+          onSuccess(result.data);
+        }
       }
     } catch (error) {
       console.error("Failed to add note:", error);
@@ -67,12 +73,13 @@ function NoteInput({ setNotes }) {
   };
 
   const remainingChars = MAX_TITLE_LENGTH - title.length;
-
   return (
     <div className="mx-auto max-w-[700px] mb-12 bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-600">
-      <h2 className="font-semibold text-xl text-slate-900 dark:text-slate-100 mb-6">
-        {t("newNote")}
-      </h2>
+      {showTitle && (
+        <h2 className="font-semibold text-xl text-slate-900 dark:text-slate-100 mb-6">
+          {t("newNote")}
+        </h2>
+      )}
 
       <form onSubmit={handleSubmit}>
         <div className="space-y-4">
@@ -137,7 +144,9 @@ function NoteInput({ setNotes }) {
 }
 
 NoteInput.propTypes = {
-  setNotes: PropTypes.func.isRequired,
+  setNotes: PropTypes.func,
+  onSuccess: PropTypes.func,
+  showTitle: PropTypes.bool,
 };
 
 export default NoteInput;

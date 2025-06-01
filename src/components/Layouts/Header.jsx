@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link, useLocation } from "react-router";
 import Input from "../Elements/Input";
 import Button from "../Elements/Button";
 import { BiLogOut, BiUser, BiSun, BiMoon } from "react-icons/bi";
@@ -13,19 +14,43 @@ function Header({ search = "", setQuery = null }) {
   const { toggleTheme, isDark } = useTheme();
   const { toggleLocale, t, isEnglish } = useLocale();
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const location = useLocation();
   const showSearchInput = setQuery !== null;
 
   const handleLogout = () => {
     logout();
     setShowUserMenu(false);
   };
-
   return (
     <div className="flex items-center justify-between px-6 py-5 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-md border-b border-slate-200 dark:border-gray-700 sticky top-0 z-[100] md:px-8 md:py-6 flex-col md:flex-row gap-4 text-center md:text-left transition-colors">
-      <h1 className="flex items-center gap-2 font-bold text-2xl text-slate-900 dark:text-white">
-        {t("appTitle")}
-      </h1>
-
+      <div className="flex items-center gap-8">
+        <h1 className="flex items-center gap-2 font-bold text-2xl text-slate-900 dark:text-white">
+          {t("appTitle")}
+        </h1>{" "}
+        {/* Navigation Links */}
+        <nav className="hidden md:flex items-center gap-4">
+          <Link
+            to="/"
+            className={`px-4 py-2 rounded-lg font-medium transition-all ${
+              location.pathname === "/"
+                ? "bg-blue-500 text-white shadow-md"
+                : "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
+            }`}
+          >
+            {t("activeNotes")}
+          </Link>
+          <Link
+            to="/archived"
+            className={`px-4 py-2 rounded-lg font-medium transition-all ${
+              location.pathname === "/archived"
+                ? "bg-blue-500 text-white shadow-md"
+                : "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
+            }`}
+          >
+            {t("archivedNotes")}
+          </Link>
+        </nav>
+      </div>
       <div className="flex items-center gap-4">
         {showSearchInput && (
           <div className="relative flex items-center">
@@ -82,7 +107,6 @@ function Header({ search = "", setQuery = null }) {
               {user?.name || "User"}
             </span>
           </button>
-
           {showUserMenu && (
             <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50">
               <div className="px-4 py-2 border-b border-gray-100 dark:border-gray-700">
@@ -100,9 +124,34 @@ function Header({ search = "", setQuery = null }) {
                 <BiLogOut /> {t("logout")}
               </Button>
             </div>
-          )}
+          )}{" "}
         </div>
-      </div>
+      </div>{" "}
+      {/* Mobile Navigation */}
+      <nav className="md:hidden w-full">
+        <div className="flex justify-center gap-2">
+          <Link
+            to="/"
+            className={`flex-1 px-4 py-2 rounded-lg font-medium transition-all text-center ${
+              location.pathname === "/"
+                ? "bg-blue-500 text-white shadow-md"
+                : "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
+            }`}
+          >
+            {t("activeNotes")}
+          </Link>
+          <Link
+            to="/archived"
+            className={`flex-1 px-4 py-2 rounded-lg font-medium transition-all text-center ${
+              location.pathname === "/archived"
+                ? "bg-blue-500 text-white shadow-md"
+                : "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
+            }`}
+          >
+            {t("archivedNotes")}
+          </Link>
+        </div>
+      </nav>
     </div>
   );
 }

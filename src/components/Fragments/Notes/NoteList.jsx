@@ -1,5 +1,6 @@
 import NoteItem from "./NoteItem";
 import PropTypes from "prop-types";
+import { Link } from "react-router";
 import { useLocale } from "../../../hooks/useLocale";
 
 function NoteList({ notes, label, setNotes }) {
@@ -25,11 +26,26 @@ function NoteList({ notes, label, setNotes }) {
             />
           ))
         ) : (
-          <p className="text-center text-slate-400 dark:text-slate-500 text-lg font-medium py-16 px-5 bg-white dark:bg-slate-800 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-600">
-            {label.includes(t("archivedNotes"))
-              ? t("emptyArchive")
-              : t("emptyNotes")}
-          </p>
+          <div className="text-center py-16 px-5 bg-white dark:bg-slate-800 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-600">
+            <p className="text-slate-400 dark:text-slate-500 text-lg font-medium mb-4">
+              {label.includes(t("archivedNotes"))
+                ? t("emptyArchive")
+                : t("emptyNotes")}
+            </p>
+            {!label.includes(t("archivedNotes")) && (
+              <div className="mt-4">
+                <p className="text-slate-500 dark:text-slate-400 text-sm mb-4">
+                  {t("emptyNotesDesc")}
+                </p>
+                <Link
+                  to="/create"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-all hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                >
+                  {t("createNote")}
+                </Link>
+              </div>
+            )}
+          </div>
         )}
       </div>
     </>

@@ -1,5 +1,7 @@
 import { Route, Routes } from "react-router";
 import HomePage from "../pages/HomePage";
+import ArchivedPage from "../pages/ArchivedPage";
+import CreateNotePage from "../pages/CreateNotePage";
 import DetailNote from "../pages/DetailNote";
 import NotFoundPage from "../pages/NotFoundPage";
 import LoginPage from "../pages/auth/LoginPage";
@@ -19,6 +21,22 @@ export default function AppRoutes() {
         element={
           <ProtectedRoute>
             <HomePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/archived"
+        element={
+          <ProtectedRoute>
+            <ArchivedPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/create"
+        element={
+          <ProtectedRoute>
+            <CreateNotePage />
           </ProtectedRoute>
         }
       />

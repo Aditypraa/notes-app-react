@@ -26,7 +26,6 @@ function NoteItem({ id, title, body, createdAt, archived, action, index = 0 }) {
       console.error("Failed to delete note:", error);
     }
   };
-
   // Fungsi untuk mengarsip/unarsip catatan
   const handleArchive = async () => {
     try {
@@ -38,12 +37,9 @@ function NoteItem({ id, title, body, createdAt, archived, action, index = 0 }) {
       }
 
       if (!result.error) {
-        // Update local state by toggling the archived status
-        action((notes) =>
-          notes.map((note) =>
-            note.id === id ? { ...note, archived: !note.archived } : note
-          )
-        );
+        // Remove the note from current list since it changed category
+        // (archived note should disappear from active list and vice versa)
+        action((notes) => notes.filter((note) => note.id !== id));
       }
     } catch (error) {
       console.error("Failed to archive/unarchive note:", error);
