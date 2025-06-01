@@ -72,14 +72,11 @@ function ArchivedPage() {
 
   return (
     <MainLayout search={searchQuery} setQuery={handleSearchChange}>
-      <div className="max-w-[1200px] mx-auto p-6 md:p-8 flex-1">
-        {/* Archived notes list */}
-        <NoteList
-          label={t("archivedNotes")}
-          notes={filteredNotes}
-          setNotes={setNotes}
-        />
-      </div>
+      <NoteList
+        label={t("archivedNotes")}
+        notes={filteredNotes}
+        setNotes={setNotes}
+      />
     </MainLayout>
   );
 }

@@ -70,14 +70,12 @@ function HomePage() {
   const filteredNotes = getFilteredNotes();
   return (
     <MainLayout search={searchQuery} setQuery={handleSearchChange}>
-      <div className="max-w-[1200px] mx-auto p-6 md:p-8 flex-1">
-        {/* Active notes list */}
-        <NoteList
-          label={t("activeNotes")}
-          notes={filteredNotes}
-          setNotes={setNotes}
-        />
-      </div>
+      {/* Active notes list */}
+      <NoteList
+        label={t("activeNotes")}
+        notes={filteredNotes}
+        setNotes={setNotes}
+      />
     </MainLayout>
   );
 }
