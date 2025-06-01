@@ -5,6 +5,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { register } from "../../utils/apiUtils";
 import Input from "../../components/Elements/Input";
 import Button from "../../components/Elements/Button";
+import { useLocale } from "../../hooks/useLocale";
 
 function RegisterPage() {
   const [name, setName] = useState("");
@@ -15,33 +16,33 @@ function RegisterPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const { t } = useLocale();
   const navigate = useNavigate();
-
   const validateForm = () => {
     const newErrors = {};
 
     if (!name.trim()) {
-      newErrors.name = "Nama tidak boleh kosong";
+      newErrors.name = t("nameRequired");
     } else if (name.length < 2) {
-      newErrors.name = "Nama minimal 2 karakter";
+      newErrors.name = t("nameMinLength");
     }
 
     if (!email.trim()) {
-      newErrors.email = "Email tidak boleh kosong";
+      newErrors.email = t("emailRequired");
     } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = "Format email tidak valid";
+      newErrors.email = t("emailInvalid");
     }
 
     if (!password.trim()) {
-      newErrors.password = "Password tidak boleh kosong";
+      newErrors.password = t("passwordRequired");
     } else if (password.length < 6) {
-      newErrors.password = "Password minimal 6 karakter";
+      newErrors.password = t("passwordMinLength");
     }
 
     if (!confirmPassword.trim()) {
-      newErrors.confirmPassword = "Konfirmasi password tidak boleh kosong";
+      newErrors.confirmPassword = t("confirmPasswordRequired");
     } else if (password !== confirmPassword) {
-      newErrors.confirmPassword = "Password tidak cocok";
+      newErrors.confirmPassword = t("passwordMismatch");
     }
 
     setErrors(newErrors);
@@ -81,22 +82,22 @@ function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-slate-900 dark:to-slate-800 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div>
-          <div className="mx-auto h-12 w-12 flex items-center justify-center rounded-full bg-blue-100">
+          <div className="mx-auto h-12 w-12 flex items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900">
             <span className="text-2xl">📑</span>
           </div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Buat Akun Baru
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
+            {t("registerTitle")}
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Atau{" "}
+          <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-300">
+            {t("registerSubtitle")}{" "}
             <Link
               to="/login"
-              className="font-medium text-blue-600 hover:text-blue-500"
+              className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300"
             >
-              masuk dengan akun yang sudah ada
+              {t("loginSubtitle")}
             </Link>
           </p>
         </div>
@@ -112,7 +113,7 @@ function RegisterPage() {
                   setName(value);
                   clearError("name");
                 }}
-                placeholder="Nama lengkap"
+                placeholder={t("name")}
                 className={errors.name ? "border-red-500" : ""}
                 disabled={loading}
               />
@@ -130,7 +131,7 @@ function RegisterPage() {
                   setEmail(value);
                   clearError("email");
                 }}
-                placeholder="Email address"
+                placeholder={t("email")}
                 className={errors.email ? "border-red-500" : ""}
                 disabled={loading}
               />
@@ -148,19 +149,19 @@ function RegisterPage() {
                   setPassword(value);
                   clearError("password");
                 }}
-                placeholder="Password"
+                placeholder={t("password")}
                 className={errors.password ? "border-red-500 pr-12" : "pr-12"}
                 disabled={loading}
-              />
+              />{" "}
               <button
                 type="button"
                 className="absolute inset-y-0 right-0 pr-3 flex items-center"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? (
-                  <AiOutlineEyeInvisible className="h-5 w-5 text-gray-400" />
+                  <AiOutlineEyeInvisible className="h-5 w-5 text-gray-400 dark:text-gray-500" />
                 ) : (
-                  <AiOutlineEye className="h-5 w-5 text-gray-400" />
+                  <AiOutlineEye className="h-5 w-5 text-gray-400 dark:text-gray-500" />
                 )}
               </button>
               {errors.password && (
@@ -177,21 +178,21 @@ function RegisterPage() {
                   setConfirmPassword(value);
                   clearError("confirmPassword");
                 }}
-                placeholder="Konfirmasi password"
+                placeholder={t("confirmPassword")}
                 className={
                   errors.confirmPassword ? "border-red-500 pr-12" : "pr-12"
                 }
                 disabled={loading}
-              />
+              />{" "}
               <button
                 type="button"
                 className="absolute inset-y-0 right-0 pr-3 flex items-center"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
               >
                 {showConfirmPassword ? (
-                  <AiOutlineEyeInvisible className="h-5 w-5 text-gray-400" />
+                  <AiOutlineEyeInvisible className="h-5 w-5 text-gray-400 dark:text-gray-500" />
                 ) : (
-                  <AiOutlineEye className="h-5 w-5 text-gray-400" />
+                  <AiOutlineEye className="h-5 w-5 text-gray-400 dark:text-gray-500" />
                 )}
               </button>
               {errors.confirmPassword && (
@@ -200,14 +201,14 @@ function RegisterPage() {
                 </p>
               )}
             </div>
-          </div>
-
+          </div>{" "}
           {errors.submit && (
-            <div className="rounded-md bg-red-50 p-4">
-              <p className="text-sm text-red-800">{errors.submit}</p>
+            <div className="rounded-md bg-red-50 dark:bg-red-900/20 p-4">
+              <p className="text-sm text-red-800 dark:text-red-200">
+                {errors.submit}
+              </p>
             </div>
           )}
-
           <div>
             <Button
               type="submit"
@@ -235,12 +236,12 @@ function RegisterPage() {
                       fill="currentColor"
                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                     ></path>
-                  </svg>
-                  Memproses...
+                  </svg>{" "}
+                  {t("processing")}
                 </span>
               ) : (
                 <span className="flex items-center gap-2">
-                  <BiUserPlus /> Daftar
+                  <BiUserPlus /> {t("registerButton")}
                 </span>
               )}
             </Button>

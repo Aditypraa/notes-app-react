@@ -17,9 +17,8 @@ function Input({ name, type, value, onChange, className, ...rest }) {
     onChange: handleChange,
     ...rest,
   };
-
   const baseClass =
-    "block w-full my-3 px-4 py-4 font-sans bg-white text-slate-900 border-2 border-slate-200 rounded-md shadow-sm transition-all outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 placeholder:text-slate-400 placeholder:font-normal";
+    "block w-full my-3 px-4 py-4 font-sans bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 border-2 border-slate-200 dark:border-slate-600 rounded-md shadow-sm transition-all outline-none focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900 placeholder:text-slate-400 dark:placeholder:text-slate-500 placeholder:font-normal";
 
   const textAreaClass = "min-h-[200px] resize-y text-sm font-normal";
   const inputClass = "text-base font-semibold";
