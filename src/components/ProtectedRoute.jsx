@@ -1,4 +1,4 @@
-import { Navigate, useLocation } from "react-router";
+import { Navigate, useLocation, Outlet } from "react-router";
 import PropTypes from "prop-types";
 import { useAuth } from "../hooks/useAuth";
 import { useLocale } from "../hooks/useLocale";
@@ -23,11 +23,12 @@ function ProtectedRoute({ children }) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  return children;
+  // Support both wrapper dan nested routes
+  return children || <Outlet />;
 }
 
 ProtectedRoute.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
 };
 
 export default ProtectedRoute;

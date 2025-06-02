@@ -1,8 +1,3 @@
-/**
- * Format date to locale string
- * @param {string} date - ISO date string
- * @returns {string} - Formatted date string
- */
 export function showFormattedDate(date) {
   const options = {
     weekday: "long",

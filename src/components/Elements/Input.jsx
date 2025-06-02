@@ -36,7 +36,8 @@ function Input({ name, type, value, onChange, className, ...rest }) {
 
 Input.propTypes = {
   name: PropTypes.string.isRequired,
-  type: PropTypes.oneOf(["text", "textarea", "search"]).isRequired,
+  type: PropTypes.oneOf(["text", "textarea", "search", "email", "password"])
+    .isRequired,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   className: PropTypes.string,

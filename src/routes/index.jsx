@@ -15,39 +15,13 @@ export default function AppRoutes() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
 
-      {/* Protected Routes */}
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <HomePage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/archived"
-        element={
-          <ProtectedRoute>
-            <ArchivedPage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/create"
-        element={
-          <ProtectedRoute>
-            <CreateNotePage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/notes/:id"
-        element={
-          <ProtectedRoute>
-            <DetailNote />
-          </ProtectedRoute>
-        }
-      />
+      {/* Protected Routes - Nested under ProtectedRoute */}
+      <Route path="/" element={<ProtectedRoute />}>
+        <Route index element={<HomePage />} />
+        <Route path="archived" element={<ArchivedPage />} />
+        <Route path="create" element={<CreateNotePage />} />
+        <Route path="notes/:id" element={<DetailNote />} />
+      </Route>
 
       {/* 404 Page */}
       <Route path="*" element={<NotFoundPage />} />

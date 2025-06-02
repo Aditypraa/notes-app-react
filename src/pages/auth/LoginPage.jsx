@@ -92,7 +92,7 @@ function LoginPage() {
             <div>
               <Input
                 name="email"
-                type="text"
+                type="email"
                 value={email}
                 onChange={(value) => {
                   setEmail(value);
@@ -119,7 +119,7 @@ function LoginPage() {
                 placeholder={t("password")}
                 className={errors.password ? "border-red-500 pr-12" : "pr-12"}
                 disabled={loading}
-              />{" "}
+              />
               <button
                 type="button"
                 className="absolute inset-y-0 right-0 pr-3 flex items-center"
